@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Нууц мэндчилгээ 💖</title>
+<style>
+:root {
+  --bg: #09050e;
+  --card: rgba(26, 16, 38, 0.75);
+  --ink: #ffffff;
+  --muted: #b8a2c7;
+  --accent: #ff2a85;
+  --accent-glow: rgba(255, 42, 133, 0.4);
+  --line: rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 10% 20%, #2b0c3f 0%, #09050e 70%);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  padding: 36px 24px;
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 42, 133, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.sp {
+  z-index: 0;
+  position: fixed;
+  bottom: -40px;
+  pointer-events: none;
+  opacity: 0.6;
+  animation: up linear infinite;
+}
+
+@keyframes up {
+  to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  margin: 10px 0 15px;
+  background: linear-gradient(135deg, #fff 30%, #ff85b3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+p {
+  line-height: 1.6;
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 10px 0;
+}
+
+.lock-icon {
+  font-size: 3.2rem;
+  margin-bottom: 10px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+input {
+  width: 100%;
+  padding: 16px;
+  font-size: 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--ink);
+  text-align: center;
+  margin-top: 16px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+button {
+  margin-top: 14px;
+  width: 100%;
+  padding: 16px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ff2a85, #b833ff);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 25px var(--accent-glow);
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+button:hover { opacity: 0.9; }
+button:active { transform: scale(0.97); }
+
+.err {
+  color: #ff66a3;
+  min-height: 1.4em;
+  font-size: 0.85rem;
+  margin-top: 8px;
+}
+
+.shake { animation: sh 0.4s; }
+@keyframes sh {
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+canvas { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+
+.media-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.photo-box, .video-box {
+  width: 100%;
+  height: 220px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 42, 133, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-preview-box {
+  width: 100%;
+  height: 240px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 42, 133, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 16px 0;
+}
+.profile-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.msg {
+  text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--ink);
+  white-space: pre-line;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.cake-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 16px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.cake-emoji {
+  width: 210px;
+  height: 170px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  perspective: 800px;
+}
+.cake-scene {
+  position: relative;
+  width: 180px;
+  height: 145px;
+  transform-style: preserve-3d;
+  transform: rotateX(-12deg) rotateY(-22deg);
+  animation: cakeFloat 4s ease-in-out infinite;
+}
+@keyframes cakeFloat {
+  0%,100% { transform: rotateX(-12deg) rotateY(-22deg) translateY(0); }
+  50% { transform: rotateX(-12deg) rotateY(-22deg) translateY(-7px); }
+}
+.cake-layer {
+  position: absolute;
+  left: 22px;
+  width: 136px;
+  height: 43px;
+  border-radius: 12px 12px 18px 18px;
+  background: linear-gradient(90deg,#9f2865 0%,#e85c9b 38%,#ffb2d0 72%,#bd3c7e 100%);
+  box-shadow: inset -10px -5px 0 rgba(91,17,57,.2), 0 10px 14px rgba(0,0,0,.3);
+}
+.cake-layer::before {
+  content:"";
+  position:absolute;
+  left:0;
+  top:-13px;
+  width:100%;
+  height:27px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#fff0f6,#ff9fc4);
+  border:1px solid rgba(255,255,255,.45);
+}
+.cake-bottom { top:84px; }
+.cake-top {
+  top:49px;
+  left:32px;
+  width:116px;
+  height:38px;
+  background:linear-gradient(90deg,#b83b78,#ff9fc5 60%,#d94b8d);
+}
+.cake-top::before { width:100%; }
+.cake-icing {
+  position:absolute;
+  z-index:2;
+  top:36px;
+  left:32px;
+  width:116px;
+  height:24px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#fff5f9,#ffb9d4);
+  box-shadow:inset 0 -5px 0 rgba(218,73,135,.18);
+}
+.cake-drip {
+  position:absolute;
+  z-index:3;
+  top:48px;
+  left:45px;
+  width:12px;
+  height:20px;
+  border-radius:0 0 9px 9px;
+  background:#ffb9d4;
+  box-shadow:25px 4px 0 -1px #ffd2e2,53px -1px 0 #ffb9d4,77px 3px 0 -1px #ffd2e2;
+}
+.cake-sprinkle {
+  position:absolute;
+  z-index:4;
+  top:33px;
+  left:57px;
+  width:5px;
+  height:3px;
+  border-radius:3px;
+  background:#ffd166;
+  transform:rotate(25deg);
+  box-shadow:18px 4px #fff,40px -1px #b833ff,58px 5px #ffd166,75px -2px #fff;
+}
+.candle {
+  position:absolute;
+  z-index:5;
+  top:5px;
+  width:8px;
+  height:35px;
+  border-radius:3px;
+  background:repeating-linear-gradient(135deg,#fff 0 5px,#ff6fa8 5px 9px);
+  box-shadow:1px 2px 3px rgba(0,0,0,.25);
+}
+.candle-one { left:68px; }
+.candle-two { left:110px; top:9px; }
+.flame {
+  position:absolute;
+  left:-2px;
+  top:-17px;
+  width:12px;
+  height:18px;
+  border-radius:70% 30% 60% 40%;
+  background:radial-gradient(ellipse at 50% 70%,#fff7b0 0 18%,#ffd166 35%,#ff7b35 75%);
+  filter:drop-shadow(0 0 7px #ffb347);
+  animation:flicker .7s ease-in-out infinite alternate;
+}
+@keyframes flicker {
+  from { transform:rotate(-7deg) scale(.92); }
+  to { transform:rotate(7deg) scale(1.08); }
+}
+.cake-emoji.extinguished .flame { display:none; }
+.cake-emoji.extinguished .candle::after {
+  content:"";
+  position:absolute;
+  width:12px;
+  height:17px;
+  left:-3px;
+  top:-19px;
+  border-left:2px solid rgba(220,220,220,.65);
+  border-radius:50%;
+  transform:rotate(25deg);
+  filter:blur(1px);
+}
+
+.surprise-btn {
+  background: linear-gradient(135deg, #ffd166, #ff2a85);
+  color: #fff;
+  margin-top: 10px;
+  border-radius: 14px;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(255, 209, 102, 0.3);
+}
+
+.mem {
+  text-align: left;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  margin: 10px 0;
+  font-size: 0.95rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mem:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: rgba(255, 42, 133, 0.08);
+}
+.mem span.hint-badge {
+  font-size: 0.75rem;
+  background: rgba(255, 42, 133, 0.2);
+  color: #ff85b3;
+  padding: 3px 8px;
+  border-radius: 8px;
+  white-space: nowrap;
+  margin-left: 8px;
+}
+
+#modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+}
+.modal-content {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  max-width: 380px;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes scaleUp {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.modal-content img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  display: block;
+}
+.modal-content p {
+  color: var(--ink);
+  font-style: italic;
+  font-family: Georgia, serif;
+  margin-bottom: 16px;
+}
+.close-btn {
+  background: linear-gradient(135deg, #ff2a85, #b833ff);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.fade { animation: f 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.div { color: var(--accent); letter-spacing: 0.5em; margin: 20px 0 10px; font-size: 0.9rem; }
+h2 { font-family: Georgia, serif; font-style: italic; font-size: 1.1rem; color: var(--accent); margin: 0 0 10px; }
+.sig { font-family: Georgia, serif; font-style: italic; font-size: 1.05rem; color: var(--accent); margin-top: 20px; }
+
+@keyframes f {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<audio id="bg-music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-tenderness.mp3" type="audio/mp3">
+</audio>
+
+<div id="modal" onclick="closeModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <img id="modal-img" src="" alt="Зураг">
+    <p id="modal-text"></p>
+    <button class="close-btn" onclick="closeModal()">Хаах ✕</button>
+  </div>
+</div>
+
+<main class="card">
+  <!-- 1-Р ХУУДАС: Найзын зурагтай мэндчилгээ -->
+  <section id="profile-greet">
+    <div class="fade" style="font-size: 2.2rem; margin-bottom: 5px;">💖✨</div>
+    <h1 class="fade">Үзэсгэлэн гоо доо...</h1>
+    <div class="profile-preview-box fade">
+      <img src="friend.jpg" alt="Найзын зураг" onerror="this.src='pho.jpg'">
+    </div>
+    <p class="fade" style="font-family: Georgia, serif; font-style: italic; font-size: 1.1rem; color: var(--accent);">Төрсөн өдрийн мэнд хүргэе! 🥳✨</p>
+    <button class="fade surprise-btn" onclick="goToLockPage()">Цааш үргэлжлүүлэх 🔑</button>
+  </section>
+
+  <!-- 2-Р ХУУДАС: Нууц үг оруулах -->
+  <section id="lock" style="display:none">
+    <div class="lock-icon">✨</div>
+    <h1>Нууц мэндчилгээ</h1>
+    <p>Зөвхөн чамд зориулав. Нууц үгээ оруулж нээгээрэй 🔑</p>
+    <p id="hint" style="color: var(--accent); font-weight: 500; font-size: 0.9rem;"></p>
+    <input id="pw" type="text" autocomplete="off" autocapitalize="off" placeholder="нууц үг...">
+    <div class="err" id="err"></div>
+    <button id="go">Нээх 🤍</button>
+  </section>
+
+  <!-- 3-Р ХУУДАС: Бичлэг (Видео) -->
+  <section id="video-section" style="display:none">
+    <div class="fade" style="font-size: 2.2rem; margin-bottom: 5px;">🎬✨</div>
+    <h1 class="fade">Бяцхан бичлэг 🎥</h1>
+    <div class="video-box fade" style="margin: 16px 0;">
+      <video id="main-video" controls autoplay muted loop>
+        <source src="" type="video/mp4">
+      </video>
+    </div>
+    <button class="fade surprise-btn" onclick="goToCakePage()">Лаагаа үлээх рүү орох 🎂</button>
+  </section>
+
+  <!-- 4-Р ХУУДАС: Лаа үлээх -->
+  <section id="open" style="display:none">
+    <div class="fade" style="font-size: 2.2rem; margin-bottom: 5px;">🎂✨💗</div>
+    <h1 class="fade">Хүслээ шивнээрэй…</h1>
+    <p>Нүдээ аниад хүслээ бодоорой. Дараа нь лаагаа үлээгээрэй 🤍</p>
+
+    <div class="cake-box fade">
+      <div class="cake-emoji" id="cake-icon" aria-label="3D төрсөн өдрийн бялуу">
+        <div class="cake-scene">
+          <div class="cake-layer cake-bottom"></div>
+          <div class="cake-layer cake-top"></div>
+          <div class="cake-icing"></div>
+          <div class="cake-drip"></div>
+          <div class="cake-sprinkle"></div>
+          <div class="candle candle-one"><span class="flame"></span></div>
+          <div class="candle candle-two"><span class="flame"></span></div>
+        </div>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--muted); margin: 0 0 8px 0;" id="cake-text">Хүслээ шивнээд лаагаа үлээгээрэй 🌬️</p>
+      <button class="surprise-btn" id="blow-btn" onclick="handleCandleAction()">🎂 Лаагаа үлээх</button>
+    </div>
+    <p class="fade" style="font-size:.8rem;">Чамд зориулсан жижигхэн гэнэтийн бэлэг 💌</p>
+  </section>
+
+  <!-- 5-Р ХУУДАС: Урт захидал / мессеж унших -->
+  <section id="letter-preview" style="display:none">
+    <div class="fade" style="font-size: 2.2rem; margin-bottom: 5px;">💌🤍✨</div>
+    <h1 class="fade" id="title">Төрсөн өдрийн мэнд!</h1>
+    <p class="msg fade" id="msg"></p>
+    <button class="fade surprise-btn" onclick="goToMemoriesPage()">Дурсамж зурагнууд үзэх 📸</button>
+  </section>
+
+  <!-- 6-Р ХУУДАС: Дурсамж зурагнууд -->
+  <section id="letter" style="display:none">
+    <div class="fade" style="font-size: 2.2rem; margin-bottom: 5px;">✨🤍📸</div>
+    <h1 class="fade">Дурсамжийн хуудас</h1>
+    
+    <div class="div">✦ ✦ ✦</div>
+    <h2 class="fade">Бидний дурсамжууд 📸</h2>
+    <p class="fade" style="font-size:.85rem;">Зураг бүрт нэг дурсамж бий 🤍</p>
+    <div id="mems"></div>
+
+    <div class="media-container fade" id="main-photo-wrap" style="margin-top: 16px;">
+      <div class="photo-box">
+        <img id="main-photo" src="" alt="Зураг">
+      </div>
+    </div>
+    <p class="fade sig">Хэзээд би active байгаа шүү за  🤍</p>
+  </section>
+</main>
+
+<script>
+const CONFIG = {
+  name: "Найз минь",
+  password: "4",
+  hint: "Сэжүүр: hdule ble🌍🌏",
+  
+  photo: "pho.jpg", 
+  video: "video1.mp4", 
+
+  message: "Төрсөн өдрийн мэнд хүргэе! 🎉\n Заа сайн уу хха 🫂 ямартаа ч төрсөн өдрийн мэнд найзааа 🎉 ёооо гэхдээ яг бичих гэсэн чинь нулимс түрүүлээд байдаг юм уу хха 🥹 гэхдээ 3 уулаа бүр айгуй өвөрмөц найзалчихсан юм bna 🫶 жил бүр төрсөн өдрөөр чинь хийх зураг байхгүй байгаад байх юм тэгээд уулзаагүй юм уу гэхээр уулзсан байгаад гэхдээ тэр үед яагаад зураг авахуулаагүй юм бол гэхээр угаасаа удаан хугацааны дараа нэг сайхан уулздаг байжээ хха 📸\n\nЗаа энэ ч яах вэ 🤭 гол сэдэвдээ оръё 🎯 өнөөдөр бол чиний өдөр энэ тэр гэж бол хэлэхгүй ээ угаасаа нэг л өдөр гэж юу байх вэ дээ чи төрсөн цагаасаа л хойш өдөр бүр өөрөө байсан шүү дээ ⏳ тэгэхээр ганцхан өдрөөр хязгаарлалтгүй өдөр бүр жаргалтай байх хэрэгтэй шүү ✨\n\nЗаа гэхдээ найз нь чамайг ингээд гуниглаад байгаа story note энтэрийг нь хараад уг нь санаа зовдог л доо 🥺 гэхдээ яг юу гэж хэлэхээ мэддэггүй юм уу эсвэл зүгээр л хэн ч биш өөртөө зориулж хийсэн байхад нь нэг юм ороод байвал бас мэдэхгүй гэж боддог хха 💭 заа энэ ч бас гол сэдэв нь биш байсан байна ❌\n\nЗҮГЭЭР Л БАЙНГА ГЭЖ БОЛ ХУДЛАА ЯРЬЖ ЧАДАХГҮЙ ХАЯАА Ч ГЭСЭН ХЭН НЭГЭН ӨӨР ХҮНТЭЙ ЯРЬМААР САНАГДВАЛ БИ БАЙГАА ШҮҮ ЗАА 🫂💖\n\nЧИ МИНЬ ЭНЭ ХОРВООД ХАЙРЛАГДАХ ГЭЖ ИРСЭН АЗ ЖАРГАЛТАЙ ЭРХЭМСЭГ ОРШИХУЙ ЮМ ШҮҮ ДЭЭ 👑💫 Тийм болохоор гунигтай үедээ зүгээр л жаргал дунд байгаа жижигхэн зовлон амттай гээд давж гараарай тэрний цаана чамайг илүү сайхан ирээдүй хүлээж байгааг санаарай 🌅 БҮР ГОЁ АМЬДРААРАЙ ЗАА 🔥\n\nЗалуу байхдаа уулзах цаг ийм ховор байгаа юм чинь нас явах тусам л холдох байх 🕰️ гэхдээ би хэзээ ч байсан чамд байгаа шүү 🤝 тийм болохоор битгий ахиж найзгүй гэж бодоорой за 🙅‍♀️ хэцүү үедээ битгий ганцаараа шаналаарай 🥀 зүгээр хэн нэгэнд хэлчихвэл арай дээр болох юм шиг санагдвал надад итгээд хэлж болно шүү 💌 тэглээ гээд чи сул дорой гэсэн үг ерөөсөө биш шүү 💪 би одоо ингэж олон юм ярьж байгаа ч гэсэн тэр үед чинь зүгээр л айгүй сайн сонсогч байж чадна 🎧\n\nЗаа тэгээд өөртөө хүсэж байгаа бүх сайн сайхан зүйлсээ чамд ч бас хүсье 🤲🍀 ТЭГЭЭД БАС ЯАДИЙН \"ЕРТӨНЦИЙН ТӨВ\" ЮМ ШИГ АМЬДРААРАЙ ХАХА 🌍👑\n\nЗа тэгээд 2 happy гоё тэмдэглээрэй 🥳🥂✨",
+  
+  memories: [
+    {
+      text: "🤍 Хэсэг хугацаанд хол байж байгаад уулзахаараа яг л өчигдөр хамт байсан юм шиг яриа ундардаг тэр мөч.",
+      image: "photo5.jpg"
+    },
+    {
+      text: "бүх грүпп гүйлгэж харsiimaa tgsn harin ene zurag bur aimr hoorhn zurg bgad orulku bj chdsngue sorryyy meeee.",
+      image: "photo2.jpg"
+    },
+    {
+      text: "Дараагийн удаа тухтай гэгч нь уулзаж кофе уунгаа ярих зүйл их байна аа хха ☕️",
+      image: "photo4.jpg"
+    }
+  ]
+};
+
+const $ = id => document.getElementById(id);
+
+for (let n = 0; n < 25; n++) { 
+  const s = document.createElement("span"); 
+  s.className = "sp"; 
+  s.textContent = ["✨","🤍","🌸","⭐","💫"][n % 5]; 
+  s.style.left = (Math.random() * 96) + "%"; 
+  s.style.fontSize = (12 + Math.random() * 16) + "px"; 
+  s.style.animationDuration = (7 + Math.random() * 8) + "s"; 
+  s.style.animationDelay = (-Math.random() * 12) + "s"; 
+  document.body.appendChild(s); 
+}
+
+$("hint").textContent = CONFIG.hint;
+$("msg").textContent = CONFIG.message;
+
+if (CONFIG.photo) {
+  $("main-photo").src = CONFIG.photo;
+} else {
+  $("main-photo-wrap").style.display = "none";
+}
+
+if (CONFIG.video) {
+  const vid = $("main-video");
+  vid.querySelector("source").src = CONFIG.video;
+  vid.load();
+  vid.onerror = function() {
+    $("main-video-wrap").parentElement.style.display = "none";
+  };
+} else {
+  $("main-video-wrap").parentElement.style.display = "none";
+}
+
+CONFIG.memories.forEach((mem, k) => { 
+  const d = document.createElement("div"); 
+  d.className = "mem fade"; 
+  d.style.animationDelay = (0.3 + k * 0.2) + "s"; 
+  
+  d.innerHTML = `<span>🤍 ${mem.text}</span><span class="hint-badge">Зураг харах 📷</span>`;
+  
+  d.addEventListener("click", () => {
+    $("modal-img").src = mem.image;
+    $("modal-text").textContent = mem.text;
+    $("modal").style.display = "flex";
+  });
+
+  $("mems").appendChild(d); 
+});
+
+function closeModal() {
+  $("modal").style.display = "none";
+}
+
+let candleState = 0;
+
+// 1. Найзын зурагтай хуудаснаас нууц үг оруулах хуудас руу очих
+function goToLockPage() {
+  $("profile-greet").style.display = "none";
+  $("lock").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// 2. Нууц үг зөв үед 3-р хуудас (Бичлэг) руу орох
+function check() {
+  if ($("pw").value.trim().toLowerCase() === CONFIG.password.toLowerCase()) {
+    $("lock").style.display = "none";
+    $("video-section").style.display = "block"; 
+    
+    const music = $("bg-music");
+    music.volume = 0.5;
+    music.play().catch(e => console.log("Audio play blocked:", e));
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    $("err").textContent = "Буруу байна, дахин нэг оролдоорой 😄";
+    const c = document.querySelector(".card"); 
+    c.classList.remove("shake"); 
+    void c.offsetWidth; 
+    c.classList.add("shake");
+  }
+}
+
+// 3. Бичлэгээс 4-р хуудас (Лаа үлээх) руу шилжих
+function goToCakePage() {
+  $("video-section").style.display = "none";
+  $("open").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// Лаа унтраах үйлдэл
+function handleCandleAction() {
+  const btn = $("blow-btn");
+  const cake = $("cake-icon");
+  const cakeText = $("cake-text");
+
+  if (candleState === 0) {
+    btn.textContent = "🌬️ Лаагаа үлээж байна...";
+    btn.disabled = true;
+
+    setTimeout(() => {
+      cake.classList.add("extinguished");
+      cakeText.textContent = "Лаа амжилттай унтарлаа! 🥳";
+      btn.textContent = "💌 Захидал унших";
+      btn.disabled = false;
+      candleState = 1;
+    }, 1500);
+
+  } else if (candleState === 1) {
+    // 4-р хуудаснаас 5-р хуудас (Урт захидал) рүү шилжих
+    $("open").style.display = "none";
+    $("letter-preview").style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+// 5-р хуудаснаас 6-р хуудас (Дурсамж зурагнууд) руу шилжих
+function goToMemoriesPage() {
+  $("letter-preview").style.display = "none";
+  $("letter").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  confetti();
+}
+
+function confetti(){
+  const cv = $("cv"), x = cv.getContext("2d");
+  cv.width = innerWidth; cv.height = innerHeight;
+  const cols = ["#ff2a85", "#ff85b3", "#b833ff", "#ffd166", "#ffffff"];
+  const ps = Array.from({length: 140}, () => ({
+    x: Math.random() * cv.width,
+    y: -20 - Math.random() * cv.height * .5,
+    w: 5 + Math.random() * 5,
+    h: 7 + Math.random() * 7,
+    v: 2 + Math.random() * 3,
+    s: Math.random() * 2 - 1,
+    r: Math.random() * 6,
+    c: cols[Math.floor(Math.random() * cols.length)]
+  }));
+  let t = 0;
+  (function f(){
+    x.clearRect(0, 0, cv.width, cv.height);
+    ps.forEach(p => {
+      p.y += p.v; p.x += p.s; p.r += .1;
+      x.save(); x.translate(p.x, p.y); x.rotate(p.r);
+      x.fillStyle = p.c; x.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      x.restore();
+    });
+    if(++t < 400) requestAnimationFrame(f);
+    else x.clearRect(0, 0, cv.width, cv.height);
+  })();
+}
+
+document.addEventListener("pointerdown", e => { 
+  const h = document.createElement("span"); 
+  h.textContent = ["🤍","✨","🌸"][Math.floor(Math.random() * 3)]; 
+  h.style.cssText = "position:fixed;left:" + e.clientX + "px;top:" + e.clientY + "px;font-size:22px;pointer-events:none;z-index:9;transition:all 0.8s ease-out;transform:translate(-50%,-50%) scale(0.5)"; 
+  document.body.appendChild(h); 
+  requestAnimationFrame(() => { 
+    h.style.top = (e.clientY - 80) + "px"; 
+    h.style.opacity = "0";
+    h.style.transform = "translate(-50%,-50%) scale(1.2)";
+  }); 
+  setTimeout(() => h.remove(), 800); 
+});
+
+$("go").addEventListener("click", check);
+$("pw").addEventListener("keydown", e => { if (e.key === "Enter") check(); });
+</script>
+</body>
+</html>
