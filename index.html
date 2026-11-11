@@ -605,7 +605,7 @@ CONFIG.memories.forEach((mem, k) => {
   d.className = "mem fade"; 
   d.style.animationDelay = (0.3 + k * 0.2) + "s"; 
   
-  d.innerHTML = `<span>🤍 ${mem.text}</span><span class="hint-badge">Зураг харах 📷</span>`;
+  d.innerHTML = `<span>🤍 ${mem.text}</span><span class="hint-badge"></span>`;
   
   d.addEventListener("click", () => {
     $("modal-img").src = mem.image;
@@ -622,14 +622,14 @@ function closeModal() {
 
 let candleState = 0;
 
-// 1. Найзын зурагтай хуудаснаас нууц үг оруулах хуудас руу очих
+
 function goToLockPage() {
   $("profile-greet").style.display = "none";
   $("lock").style.display = "block";
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// 2. Нууц үг зөв үед 3-р хуудас (Бичлэг) руу орох
+
 function check() {
   if ($("pw").value.trim().toLowerCase() === CONFIG.password.toLowerCase()) {
     $("lock").style.display = "none";
@@ -649,14 +649,14 @@ function check() {
   }
 }
 
-// 3. Бичлэгээс 4-р хуудас (Лаа үлээх) руу шилжих
+
 function goToCakePage() {
   $("video-section").style.display = "none";
   $("open").style.display = "block";
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// Лаа унтраах үйлдэл
+
 function handleCandleAction() {
   const btn = $("blow-btn");
   const cake = $("cake-icon");
@@ -675,14 +675,14 @@ function handleCandleAction() {
     }, 1500);
 
   } else if (candleState === 1) {
-    // 4-р хуудаснаас 5-р хуудас (Урт захидал) рүү шилжих
+ 
     $("open").style.display = "none";
     $("letter-preview").style.display = "block";
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }
 
-// 5-р хуудаснаас 6-р хуудас (Дурсамж зурагнууд) руу шилжих
+
 function goToMemoriesPage() {
   $("letter-preview").style.display = "none";
   $("letter").style.display = "block";
